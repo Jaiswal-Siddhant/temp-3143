@@ -1,20 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AddNote, Home } from './screens';
+import { NativeBaseProvider, Box } from 'native-base';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SSRProvider } from '@react-aria/ssr';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	return (
+		<SSRProvider>
+			<SafeAreaProvider>
+				<NativeBaseProvider>
+					<NavigationContainer>
+						<Stack.Navigator>
+							<Stack.Screen
+								name='Home'
+								component={Home}
+								options={{
+									headerStyle: {
+										backgroundColor: 'red',
+									},
+									headerTitleAlign: 'center',
+									title: 'Notes App',
+									headerTintColor: 'white',
+								}}
+							/>
+							<Stack.Screen
+								name='AddNote'
+								component={AddNote}
+								options={{
+									title: 'Add Note',
+								}}
+							/>
+						</Stack.Navigator>
+					</NavigationContainer>
+				</NativeBaseProvider>
+			</SafeAreaProvider>
+		</SSRProvider>
+	);
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
